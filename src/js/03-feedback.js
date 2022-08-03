@@ -18,12 +18,12 @@ function onSubmit(e) {
 }
 
 function onInput(e) {
-    const inpValue = e.currentTarget.value;
+    const inpValue = e.target.value;
     localStorage.setItem('email', inpValue);
 }
 
 function onMessage(e) {
-    const msgValue = e.currentTarget.value;
+    const msgValue = e.target.value;
     localStorage.setItem('feedback', msgValue);
 }
 
