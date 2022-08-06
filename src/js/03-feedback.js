@@ -1,51 +1,38 @@
 import throttle from "lodash.throttle";
 
+const STORAGE_KEY = 'feedback-form-state'
 const form = document.querySelector('.feedback-form')
 const input = document.querySelector('.feedback-form input')
 const message = document.querySelector('.feedback-form textarea')
-const data = {};
+const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
 form.addEventListener('submit', onSubmit);
-input.addEventListener('input', throttle(onInput, 500));
-message.addEventListener('input', throttle(onMessage, 500));
-savedTextarea();
-savedEmail();
+form.addEventListener('input', throttle(onInput, 500));
 
-
+savedInput();
 
 function onSubmit(e) {
-    e.preventDefault();
-    e.currentTarget.reset();
-
-    console.log(data)
+    if (input.value === "" || message.value === "") {
+        return alert("Все поля должны быть заполнены!");
+    }
+    else {   
+        console.log(data)
+        e.preventDefault();
+        e.currentTarget.reset();
+        localStorage.removeItem(STORAGE_KEY);
+    }
     
-    localStorage.removeItem('feedback');
-    localStorage.removeItem('email');
 }
-
 function onInput(e) {
-    const inpValue = e.target.value;
-    localStorage.setItem('email', inpValue);
+    data[e.target.name] = e.target.value
+    const dataJson = JSON.stringify(data);
+    localStorage.setItem(STORAGE_KEY, dataJson);
 }
+function savedInput() {
+    const savedText = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-function onMessage(e) {
-    const msgValue = e.target.value;
-    localStorage.setItem('feedback', msgValue);
-}
-
-function savedTextarea(e) {
-    const textareaMessage = localStorage.getItem('feedback')
-    data.message = textareaMessage;
-
-    if (textareaMessage) {
-        message.value = textareaMessage;
-    }  
-}
-function savedEmail(e) {
-    const savedMail = localStorage.getItem('email')
-    data.email = savedMail;
-
-    if (savedMail) {
-        input.value = savedMail;
-    }  
+    if (savedText) {
+        input.value = savedText.email || '';
+        message.value = savedText.message || '';
+    }
 }
