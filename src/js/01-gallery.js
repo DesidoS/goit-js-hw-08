@@ -6,8 +6,6 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-console.log(galleryItems);
-
 const galleryContainer = document.querySelector('.gallery')
 
 const markup = galleryItems.map(({ preview, original, description}) =>
@@ -16,7 +14,6 @@ const markup = galleryItems.map(({ preview, original, description}) =>
 </a>`).join("");
 
 galleryContainer.insertAdjacentHTML("beforeend", markup);
-
 
 galleryContainer.addEventListener("click", handleClick)
 
